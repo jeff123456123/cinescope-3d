@@ -1,4 +1,5 @@
 import {
+  MovieFiltersControl,
   MovieExplorer,
   MovieSearchInput,
 } from "@/components/movie-explorer";
@@ -63,6 +64,7 @@ export default function Home() {
                 Browse what is trending or search for your next favorite film.
               </p>
             </div>
+            <MovieFiltersControl />
             <MovieGrid />
           </section>
 

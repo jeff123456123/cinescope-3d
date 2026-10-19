@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { fetchMovies } from "@/lib/movies-client";
-import type { Movie } from "@/types/movie";
+import type { Movie, MovieFilters } from "@/types/movie";
 
 type SearchState = {
   key: string;
@@ -26,9 +26,14 @@ const initialState: SearchState = {
   loadMoreError: null,
 };
 
-export function useMovieSearch(query: string, retryKey: number) {
+export function useMovieSearch(
+  query: string,
+  filters: MovieFilters,
+  retryKey: number,
+) {
   const normalizedQuery = query.trim();
-  const requestKey = `${normalizedQuery}\u0000${retryKey}`;
+  const filtersKey = JSON.stringify(filters);
+  const requestKey = `${normalizedQuery}\u0000${filtersKey}\u0000${retryKey}`;
   const requestId = useRef(0);
   const activeController = useRef<AbortController | null>(null);
   const loadingMoreRef = useRef(false);
@@ -42,7 +47,7 @@ export function useMovieSearch(query: string, retryKey: number) {
     activeController.current = controller;
 
     const timeoutId = window.setTimeout(() => {
-      void fetchMovies(normalizedQuery, 1, controller.signal)
+      void fetchMovies(normalizedQuery, 1, filters, controller.signal)
         .then((result) => {
           if (
             controller.signal.aborted ||
@@ -93,7 +98,7 @@ export function useMovieSearch(query: string, retryKey: number) {
       requestId.current += 1;
       loadingMoreRef.current = false;
     };
-  }, [normalizedQuery, requestKey]);
+  }, [filters, normalizedQuery, requestKey]);
 
   const loadMore = useCallback(() => {
     if (
@@ -118,7 +123,7 @@ export function useMovieSearch(query: string, retryKey: number) {
         : current,
     );
 
-    void fetchMovies(normalizedQuery, targetPage, controller.signal)
+    void fetchMovies(normalizedQuery, targetPage, filters, controller.signal)
       .then((result) => {
         if (
           controller.signal.aborted ||
@@ -173,7 +178,7 @@ export function useMovieSearch(query: string, retryKey: number) {
           loadingMoreRef.current = false;
         }
       });
-  }, [isCurrent, normalizedQuery, requestKey, state]);
+  }, [filters, isCurrent, normalizedQuery, requestKey, state]);
 
   const currentState = isCurrent
     ? state

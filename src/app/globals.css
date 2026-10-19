@@ -480,6 +480,85 @@ input {
   line-height: 1.8;
 }
 
+.movie-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 14px;
+  margin: 0 0 24px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: linear-gradient(110deg, rgb(23 21 32 / 68%), rgb(14 14 21 / 78%));
+}
+
+.filter-field {
+  display: grid;
+  min-width: 155px;
+  gap: 7px;
+}
+
+.filter-field label {
+  color: #aaa4b6;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+}
+
+.filter-field select,
+.filter-field input {
+  width: 100%;
+  min-height: 38px;
+  padding: 0 10px;
+  border: 1px solid rgb(200 189 236 / 15%);
+  border-radius: 5px;
+  outline: none;
+  background: #111017;
+  color: #e8e4ef;
+  font-size: 11px;
+}
+
+.filter-field select:focus-visible,
+.filter-field input:focus-visible {
+  border-color: rgb(177 150 255 / 58%);
+  outline: 2px solid rgb(185 160 255 / 60%);
+  outline-offset: 2px;
+}
+
+.filter-field select:disabled {
+  color: #777380;
+  cursor: wait;
+}
+
+.clear-filters-button {
+  min-height: 38px;
+  padding: 0 12px;
+  border: 1px solid rgb(193 179 255 / 22%);
+  border-radius: 5px;
+  background: transparent;
+  color: #c7b9ed;
+  cursor: pointer;
+  font-size: 10px;
+}
+
+.clear-filters-button:hover {
+  background: rgb(123 99 190 / 12%);
+}
+
+.clear-filters-button:focus-visible {
+  outline: 2px solid #b9a0ff;
+  outline-offset: 3px;
+}
+
+.genre-error {
+  display: flex;
+  flex: 1 0 100%;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  color: #d1a6af;
+  font-size: 11px;
+}
+
 .movie-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -688,7 +767,7 @@ input {
 }
 
 .movie-status {
-  min-height: 54px;
+  min-height: 56px;
   padding-top: 18px;
   color: #aaa5b3;
   font-size: 12px;
@@ -960,6 +1039,25 @@ input:focus-visible {
   .section-description {
     max-width: 360px;
     font-size: 11px;
+  }
+
+  .movie-filters {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .filter-field {
+    min-width: 0;
+  }
+
+  .clear-filters-button {
+    align-self: end;
+  }
+
+  .genre-error {
+    grid-column: 1 / -1;
   }
 
   .movie-grid {
