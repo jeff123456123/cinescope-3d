@@ -2,6 +2,7 @@ import "server-only";
 
 import type {
   Movie,
+  MovieDetails,
   MovieFilters,
   MovieGenre,
   MovieSearchResponse,
@@ -262,4 +263,139 @@ export async function getTmdbGenres(): Promise<MovieGenre[]> {
     throw new TmdbError("Movie service returned an invalid response.", 502);
   }
   return data.genres.filter(isMovieGenre);
+}
+
+function getImagePath(value: unknown): string | null {
+  return typeof value === "string" && value.startsWith("/") ? value : null;
+}
+
+export async function getTmdbMovieDetails(id: number): Promise<MovieDetails> {
+  const token = process.env.TMDB_API_READ_ACCESS_TOKEN?.trim();
+  if (!token) {
+    throw new TmdbError(
+      "TMDB is not configured. Set TMDB_API_READ_ACCESS_TOKEN on the server.",
+      503,
+    );
+  }
+
+  const endpoint = new URL(`https://api.themoviedb.org/3/movie/${id}`);
+  endpoint.searchParams.set("append_to_response", "credits,videos");
+
+  let response: Response;
+  try {
+    response = await fetch(endpoint, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      cache: "no-store",
+    });
+  } catch {
+    throw new TmdbError("Movie service is temporarily unavailable.", 502);
+  }
+
+  if (response.status === 401) {
+    throw new TmdbError("TMDB rejected the server access token.", 502);
+  }
+  if (response.status === 404) {
+    throw new TmdbError("Movie not found.", 404);
+  }
+  if (response.status === 429) {
+    throw new TmdbError(
+      "Movie requests are temporarily rate limited. Please try again shortly.",
+      429,
+    );
+  }
+  if (!response.ok) {
+    throw new TmdbError(
+      response.status >= 500
+        ? "Movie service is temporarily unavailable."
+        : "Movie request could not be completed.",
+      502,
+    );
+  }
+
+  let data: unknown;
+  try {
+    data = await response.json();
+  } catch {
+    throw new TmdbError("Movie service returned an invalid response.", 502);
+  }
+  if (
+    !isRecord(data) ||
+    typeof data.id !== "number" ||
+    typeof data.title !== "string"
+  ) {
+    throw new TmdbError("Movie service returned an invalid response.", 502);
+  }
+
+  const genres = Array.isArray(data.genres)
+    ? data.genres.filter(isMovieGenre)
+    : [];
+  const credits = isRecord(data.credits) ? data.credits : {};
+  const castRecords = Array.isArray(credits.cast)
+    ? credits.cast.filter((member) => isRecord(member))
+    : [];
+  const cast = castRecords.flatMap((member) => {
+    if (typeof member.name !== "string" || member.name.trim().length === 0) {
+      return [];
+    }
+    return [
+      {
+        name: member.name,
+        character: typeof member.character === "string" ? member.character : "",
+        profilePath: getImagePath(member.profile_path),
+      },
+    ];
+  }).slice(0, 8);
+  const videos = isRecord(data.videos) ? data.videos.results : null;
+  const videoRecords = Array.isArray(videos)
+    ? videos.filter((video) => isRecord(video))
+    : [];
+  const trailer =
+    videoRecords.find(
+      (video) =>
+        video.site === "YouTube" &&
+        video.type === "Trailer" &&
+        video.official === true &&
+        typeof video.key === "string",
+    ) ??
+    videoRecords.find(
+      (video) =>
+        video.site === "YouTube" &&
+        video.type === "Trailer" &&
+        typeof video.key === "string",
+    );
+
+  return {
+    id: data.id,
+    title: data.title,
+    tagline: typeof data.tagline === "string" ? data.tagline : "",
+    overview: typeof data.overview === "string" ? data.overview : "",
+    genres,
+    runtime:
+      typeof data.runtime === "number" &&
+      Number.isInteger(data.runtime) &&
+      data.runtime > 0
+        ? data.runtime
+        : null,
+    releaseDate:
+      typeof data.release_date === "string" && data.release_date.length > 0
+        ? data.release_date
+        : null,
+    rating:
+      typeof data.vote_average === "number" &&
+      Number.isFinite(data.vote_average)
+        ? data.vote_average
+        : null,
+    voteCount:
+      typeof data.vote_count === "number" &&
+      Number.isInteger(data.vote_count)
+        ? data.vote_count
+        : 0,
+    posterPath: getImagePath(data.poster_path),
+    backdropPath: getImagePath(data.backdrop_path),
+    cast,
+    trailerKey: trailer && typeof trailer.key === "string" ? trailer.key : null,
+  };
 }

@@ -41,6 +41,28 @@ export type MovieSearchResponse = {
   movies: Movie[];
 };
 
+export type MovieCastMember = {
+  name: string;
+  character: string;
+  profilePath: string | null;
+};
+
+export type MovieDetails = {
+  id: number;
+  title: string;
+  tagline: string;
+  overview: string;
+  genres: MovieGenre[];
+  runtime: number | null;
+  releaseDate: string | null;
+  rating: number | null;
+  voteCount: number;
+  posterPath: string | null;
+  backdropPath: string | null;
+  cast: MovieCastMember[];
+  trailerKey: string | null;
+};
+
 export type MovieApiErrorResponse = {
   error: string;
 };

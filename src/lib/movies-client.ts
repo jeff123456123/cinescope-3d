@@ -1,5 +1,6 @@
 import type {
   Movie,
+  MovieDetails,
   MovieFilters,
   MovieGenre,
   MovieSearchResponse,
@@ -38,10 +39,75 @@ function isMovieGenre(value: unknown): value is MovieGenre {
   );
 }
 
+function isMovieCastMember(
+  value: unknown,
+): value is MovieDetails["cast"][number] {
+  return (
+    isRecord(value) &&
+    typeof value.name === "string" &&
+    typeof value.character === "string" &&
+    (typeof value.profilePath === "string" || value.profilePath === null)
+  );
+}
+
+function isMovieDetails(value: unknown): value is MovieDetails {
+  return (
+    isRecord(value) &&
+    typeof value.id === "number" &&
+    typeof value.title === "string" &&
+    typeof value.tagline === "string" &&
+    typeof value.overview === "string" &&
+    Array.isArray(value.genres) &&
+    value.genres.every(isMovieGenre) &&
+    (typeof value.runtime === "number" || value.runtime === null) &&
+    (typeof value.releaseDate === "string" || value.releaseDate === null) &&
+    (typeof value.rating === "number" || value.rating === null) &&
+    typeof value.voteCount === "number" &&
+    (typeof value.posterPath === "string" || value.posterPath === null) &&
+    (typeof value.backdropPath === "string" || value.backdropPath === null) &&
+    Array.isArray(value.cast) &&
+    value.cast.every(isMovieCastMember) &&
+    (typeof value.trailerKey === "string" || value.trailerKey === null)
+  );
+}
+
 export function getPosterUrl(posterPath: string | null): string | null {
   return posterPath
     ? `https://image.tmdb.org/t/p/w500${posterPath}`
     : null;
+}
+
+export function getBackdropUrl(backdropPath: string | null): string | null {
+  return backdropPath
+    ? `https://image.tmdb.org/t/p/w1280${backdropPath}`
+    : null;
+}
+
+export async function fetchMovieDetails(
+  id: number,
+  signal: AbortSignal,
+): Promise<MovieDetails> {
+  const response = await fetch(`/api/movies/${id}`, {
+    signal,
+    headers: { Accept: "application/json" },
+  });
+
+  let data: unknown;
+  try {
+    data = await response.json();
+  } catch {
+    throw new Error("Could not read the movie details response.");
+  }
+
+  if (!response.ok) {
+    const message =
+      isRecord(data) && typeof data.error === "string" ? data.error : null;
+    throw new Error(message ?? "Could not load movie details. Please retry.");
+  }
+  if (!isMovieDetails(data)) {
+    throw new Error("Movie service returned invalid detail data.");
+  }
+  return data;
 }
 
 export async function fetchMovies(
