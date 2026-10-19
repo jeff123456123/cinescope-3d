@@ -1,69 +1,102 @@
-import Image from "next/image";
+import { MovieGrid } from "@/components/movie-grid";
+import { SiteHeader } from "@/components/site-header";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
+    <>
+      <SiteHeader />
+      <main id="top">
+        <section className="hero" id="discover" aria-labelledby="hero-title">
+          <div className="hero-atmosphere" aria-hidden="true">
+            <div className="hero-orb hero-orb-violet" />
+            <div className="hero-orb hero-orb-indigo" />
+            <div className="hero-grain" />
+          </div>
+
+          <div className="hero-content">
+            <p className="eyebrow">
+              <span className="eyebrow-mark" aria-hidden="true" />
+              A more cinematic way to choose
+            </p>
+            <h1 id="hero-title">
+              Your next obsession
+              <br />
+              <span className="headline-accent">starts here.</span>
+            </h1>
+            <p className="hero-description">
+              Discover films worth remembering and build a watchlist for every
+              mood, moment, and movie night.
+            </p>
+
+            <div className="search-wrap" role="search" aria-label="Movie search">
+              <svg
+                aria-hidden="true"
+                className="search-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <circle cx="10.8" cy="10.8" r="6.8" />
+                <path d="m16 16 4.2 4.2" />
+              </svg>
+              <label className="sr-only" htmlFor="movie-search">
+                Search movies
+              </label>
+              <input
+                autoComplete="off"
+                id="movie-search"
+                name="movie-search"
+                placeholder="Search by title, genre, or mood"
+                type="search"
+              />
+              <span className="search-hint">DISCOVER</span>
+            </div>
+            <p className="search-note">
+              Search is coming soon. Your next great watch is out there.
+            </p>
+          </div>
+
+          <div className="hero-index" aria-hidden="true">
+            <span>01</span>
+            <span className="hero-index-line" />
+            <span>DISCOVER</span>
+          </div>
+          <a className="scroll-cue" href="#now-showing">
+            <span className="scroll-cue-line" aria-hidden="true" />
+            Scroll to explore
           </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+        </section>
+
+        <section
+          className="showcase section-shell"
+          id="now-showing"
+          aria-labelledby="showcase-title"
+        >
+          <div className="section-heading">
+            <div>
+              <p className="eyebrow section-eyebrow">Made for movie lovers</p>
+              <h2 id="showcase-title">Explore the cinematic universe</h2>
+            </div>
+            <p className="section-description">
+              Your discovery space is taking shape. Movie artwork and details
+              will appear here when movie search is connected.
+            </p>
+          </div>
+          <MovieGrid />
+        </section>
+
+        <section className="closing-note section-shell" id="about">
+          <span className="closing-rule" aria-hidden="true" />
+          <p>Less scrolling. More stories worth remembering.</p>
+          <span className="closing-rule" aria-hidden="true" />
+        </section>
       </main>
-    </div>
+      <footer className="site-footer">
+        <a className="footer-brand" href="#top">
+          CineScope <span>3D</span>
+        </a>
+        <p>Made for the love of the frame.</p>
+        <span className="footer-year">YOUR NEXT FAVORITE IS OUT THERE</span>
+      </footer>
+    </>
   );
 }
