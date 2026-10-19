@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useWatchlist } from "@/context/watchlist-context";
+import { WatchNextLink } from "@/components/watch-next-link";
 
 export function SiteHeader() {
   const { entries } = useWatchlist();
@@ -23,9 +24,7 @@ export function SiteHeader() {
         <Link className="nav-link active" href="/#discover" aria-current="page">
           Discover
         </Link>
-        <Link className="nav-link" href="/#now-showing">
-          Your next watch
-        </Link>
+        <WatchNextLink />
         <Link className="nav-link" href="/#about">
           The experience
         </Link>

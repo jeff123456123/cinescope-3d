@@ -445,6 +445,7 @@ input {
 }
 
 .showcase {
+  scroll-margin-top: 6rem;
   padding-top: 64px;
 }
 
@@ -1571,6 +1572,7 @@ input:focus-visible {
   }
 
   .showcase {
+    scroll-margin-top: 4rem;
     padding-top: 44px;
   }
 
