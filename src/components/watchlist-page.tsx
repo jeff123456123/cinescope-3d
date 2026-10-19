@@ -2,20 +2,26 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useWatchlist, type WatchlistEntry } from "@/context/watchlist-context";
+import { useState } from "react";
+import {
+  useWatchlist,
+  type WatchlistEntry,
+} from "@/context/watchlist-context";
 import { getPosterUrl } from "@/lib/movies-client";
 
 function WatchlistMovie({ entry }: { entry: WatchlistEntry }) {
   const { remove, updateRating, updateNotes } = useWatchlist();
+  const [imageFailed, setImageFailed] = useState(false);
   const posterUrl = getPosterUrl(entry.posterPath);
 
   return (
     <article className="watchlist-item">
       <div className="watchlist-poster">
-        {posterUrl ? (
+        {posterUrl && !imageFailed ? (
           <Image
             alt={`${entry.title} poster`}
             fill
+            onError={() => setImageFailed(true)}
             sizes="(max-width: 620px) 28vw, 120px"
             src={posterUrl}
           />

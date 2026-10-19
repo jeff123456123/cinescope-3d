@@ -192,7 +192,14 @@ export function useMovieSearch(
 
   useEffect(() => {
     const sentinel = sentinelRef.current;
-    if (!sentinel || !hasMore || currentState.loading || currentState.error) {
+    if (
+      !sentinel ||
+      !hasMore ||
+      currentState.loading ||
+      currentState.loadingMore ||
+      currentState.error ||
+      currentState.loadMoreError
+    ) {
       return;
     }
 
@@ -209,6 +216,8 @@ export function useMovieSearch(
   }, [
     currentState.error,
     currentState.loading,
+    currentState.loadingMore,
+    currentState.loadMoreError,
     currentState.page,
     hasMore,
     loadMore,

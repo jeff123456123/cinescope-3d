@@ -7,6 +7,7 @@ import {
   useEffect,
   useMemo,
   useReducer,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -175,10 +176,12 @@ export function WatchlistProvider({ children }: { children: ReactNode }) {
     storageError: null,
   });
   const [hydrated, setHydrated] = useState(false);
+  const lastPersistedValue = useRef<string | null>(null);
 
   useEffect(() => {
     try {
       const stored = window.localStorage.getItem(STORAGE_KEY);
+      lastPersistedValue.current = stored;
       if (stored !== null) {
         const entries = parseWatchlist(stored);
         if (entries === null) {
@@ -208,8 +211,13 @@ export function WatchlistProvider({ children }: { children: ReactNode }) {
     if (!hydrated) {
       return;
     }
+    const serialized = JSON.stringify(state.entries);
+    if (serialized === lastPersistedValue.current) {
+      return;
+    }
     try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state.entries));
+      window.localStorage.setItem(STORAGE_KEY, serialized);
+      lastPersistedValue.current = serialized;
     } catch {
       dispatch({
         type: "storage-error",
@@ -224,6 +232,7 @@ export function WatchlistProvider({ children }: { children: ReactNode }) {
         return;
       }
       if (event.newValue === null) {
+        lastPersistedValue.current = JSON.stringify([]);
         dispatch({ type: "hydrate", entries: [], storageError: null });
         return;
       }
@@ -235,6 +244,7 @@ export function WatchlistProvider({ children }: { children: ReactNode }) {
         });
         return;
       }
+      lastPersistedValue.current = event.newValue;
       dispatch({ type: "hydrate", entries, storageError: null });
     }
 

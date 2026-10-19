@@ -1047,6 +1047,48 @@ input {
   padding-bottom: 70px;
 }
 
+.app-error {
+  display: grid;
+  min-height: 60vh;
+  align-content: center;
+  justify-items: start;
+  gap: 16px;
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+
+.app-error h1 {
+  margin: 0;
+  font-size: clamp(32px, 6vw, 56px);
+  font-weight: 500;
+  letter-spacing: -0.07em;
+}
+
+.app-error > p:not(.eyebrow) {
+  margin: 0 0 5px;
+  color: #aaa5b3;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.app-error .header-cta {
+  min-height: 38px;
+}
+
+.loading-page {
+  min-height: 70vh;
+  padding-top: clamp(55px, 9vw, 100px);
+}
+
+.loading-title-skeleton {
+  width: min(430px, 72%);
+  height: 36px;
+  margin: 0 0 28px;
+  border-radius: 8px;
+  background: rgb(204 197 222 / 10%);
+  animation: skeleton-pulse 1.5s ease-in-out infinite alternate;
+}
+
 .watchlist-page-heading {
   display: flex;
   align-items: center;

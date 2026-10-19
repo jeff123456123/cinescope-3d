@@ -21,6 +21,7 @@ export function MovieDetailsDialog({ movie }: MovieDetailsDialogProps) {
   const [error, setError] = useState<string | null>(null);
   const [retryKey, setRetryKey] = useState(0);
   const [backdropFailed, setBackdropFailed] = useState(false);
+  const [posterFailed, setPosterFailed] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const openerRef = useRef<HTMLButtonElement>(null);
 
@@ -64,6 +65,7 @@ export function MovieDetailsDialog({ movie }: MovieDetailsDialogProps) {
     setError(null);
     setLoading(true);
     setBackdropFailed(false);
+    setPosterFailed(false);
     setOpen(true);
   }
 
@@ -152,10 +154,11 @@ export function MovieDetailsDialog({ movie }: MovieDetailsDialogProps) {
             {!loading && !error && details && (
               <div className="details-layout">
                 <div className="details-poster">
-                  {posterUrl ? (
+                  {posterUrl && !posterFailed ? (
                     <Image
                       alt={`${details.title} poster`}
                       fill
+                      onError={() => setPosterFailed(true)}
                       sizes="(max-width: 700px) 38vw, 240px"
                       src={posterUrl}
                     />
