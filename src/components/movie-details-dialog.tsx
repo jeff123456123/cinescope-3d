@@ -8,6 +8,7 @@ import {
   getPosterUrl,
 } from "@/lib/movies-client";
 import type { Movie, MovieDetails } from "@/types/movie";
+import { WatchlistToggle } from "@/components/watchlist-toggle";
 
 type MovieDetailsDialogProps = {
   movie: Movie;
@@ -219,6 +220,7 @@ export function MovieDetailsDialog({ movie }: MovieDetailsDialogProps) {
                       Watch trailer
                     </a>
                   )}
+                  <WatchlistToggle movie={movie} />
                 </div>
               </div>
             )}

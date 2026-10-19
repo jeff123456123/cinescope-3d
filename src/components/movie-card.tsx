@@ -9,6 +9,7 @@ import {
 import { getPosterUrl } from "@/lib/movies-client";
 import type { Movie } from "@/types/movie";
 import { MovieDetailsDialog } from "@/components/movie-details-dialog";
+import { WatchlistToggle } from "@/components/watchlist-toggle";
 
 type MovieCardProps = {
   movie: Movie;
@@ -104,7 +105,10 @@ export function MovieCard({ movie }: MovieCardProps) {
             </span>
           )}
         </div>
-        <MovieDetailsDialog movie={movie} />
+        <div className="movie-card-actions">
+          <MovieDetailsDialog movie={movie} />
+          <WatchlistToggle movie={movie} />
+        </div>
       </div>
     </article>
   );
