@@ -6,7 +6,17 @@ import { useMovieExplorerState } from "@/components/movie-explorer";
 const skeletons = ["one", "two", "three", "four", "five"];
 
 export function MovieGrid() {
-  const { movies, loading, error, retry } = useMovieExplorerState();
+  const {
+    movies,
+    loading,
+    loadingMore,
+    error,
+    loadMoreError,
+    retry,
+    loadMore,
+    hasMore,
+    sentinelRef,
+  } = useMovieExplorerState();
 
   return (
     <>
@@ -30,7 +40,11 @@ export function MovieGrid() {
         {!loading && error && (
           <div className="movie-error">
             <p>{error}</p>
-            <button className="retry-button" onClick={retry} type="button">
+            <button
+              className="retry-button"
+              onClick={retry}
+              type="button"
+            >
               Retry
             </button>
           </div>
@@ -43,7 +57,23 @@ export function MovieGrid() {
             Showing {movies.length} movies.
           </p>
         )}
+        {loadingMore && <p>Loading more movies…</p>}
+        {!loading && loadMoreError && (
+          <div className="movie-error">
+            <p>{loadMoreError}</p>
+            <button className="retry-button" onClick={loadMore} type="button">
+              Retry
+            </button>
+          </div>
+        )}
       </div>
+      {hasMore && !loading && (
+        <div
+          aria-hidden="true"
+          className="movie-grid-sentinel"
+          ref={sentinelRef}
+        />
+      )}
     </>
   );
 }

@@ -99,7 +99,7 @@ export function MovieCard({ movie }: MovieCardProps) {
           )}
           {movie.rating !== null && (
             <span aria-label={`Rating ${movie.rating.toFixed(1)} out of 10`}>
-              ★ {movie.rating.toFixed(1)}
+              {movie.rating === 0 ? "NR" : `★ ${movie.rating.toFixed(1)}`}
             </span>
           )}
         </div>

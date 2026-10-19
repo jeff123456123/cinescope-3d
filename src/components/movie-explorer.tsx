@@ -5,6 +5,7 @@ import {
   useContext,
   useState,
   type KeyboardEvent,
+  type RefObject,
   type ReactNode,
 } from "react";
 import { useMovieSearch } from "@/hooks/use-movie-search";
@@ -15,8 +16,13 @@ type MovieExplorerValue = {
   setQuery: (query: string) => void;
   movies: Movie[];
   loading: boolean;
+  loadingMore: boolean;
   error: string | null;
+  loadMoreError: string | null;
+  hasMore: boolean;
+  loadMore: () => void;
   retry: () => void;
+  sentinelRef: RefObject<HTMLDivElement | null>;
 };
 
 const MovieExplorerContext = createContext<MovieExplorerValue | null>(null);
