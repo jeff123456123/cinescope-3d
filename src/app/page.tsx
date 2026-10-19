@@ -1,3 +1,7 @@
+import {
+  MovieExplorer,
+  MovieSearchInput,
+} from "@/components/movie-explorer";
 import { MovieGrid } from "@/components/movie-grid";
 import { SiteHeader } from "@/components/site-header";
 
@@ -5,91 +9,70 @@ export default function Home() {
   return (
     <>
       <SiteHeader />
-      <main id="top">
-        <section className="hero" id="discover" aria-labelledby="hero-title">
-          <div className="hero-atmosphere" aria-hidden="true">
-            <div className="hero-orb hero-orb-violet" />
-            <div className="hero-orb hero-orb-indigo" />
-            <div className="hero-grain" />
-          </div>
-
-          <div className="hero-content">
-            <p className="eyebrow">
-              <span className="eyebrow-mark" aria-hidden="true" />
-              A more cinematic way to choose
-            </p>
-            <h1 id="hero-title">
-              Your next obsession
-              <br />
-              <span className="headline-accent">starts here.</span>
-            </h1>
-            <p className="hero-description">
-              Discover films worth remembering and build a watchlist for every
-              mood, moment, and movie night.
-            </p>
-
-            <div className="search-wrap" role="search" aria-label="Movie search">
-              <svg
-                aria-hidden="true"
-                className="search-icon"
-                viewBox="0 0 24 24"
-                fill="none"
-              >
-                <circle cx="10.8" cy="10.8" r="6.8" />
-                <path d="m16 16 4.2 4.2" />
-              </svg>
-              <label className="sr-only" htmlFor="movie-search">
-                Search movies
-              </label>
-              <input
-                autoComplete="off"
-                id="movie-search"
-                name="movie-search"
-                placeholder="Search by title, genre, or mood"
-                type="search"
-              />
-              <span className="search-hint">DISCOVER</span>
+      <MovieExplorer>
+        <main id="top">
+          <section className="hero" id="discover" aria-labelledby="hero-title">
+            <div className="hero-atmosphere" aria-hidden="true">
+              <div className="hero-orb hero-orb-violet" />
+              <div className="hero-orb hero-orb-indigo" />
+              <div className="hero-grain" />
             </div>
-            <p className="search-note">
-              Search is coming soon. Your next great watch is out there.
-            </p>
-          </div>
 
-          <div className="hero-index" aria-hidden="true">
-            <span>01</span>
-            <span className="hero-index-line" />
-            <span>DISCOVER</span>
-          </div>
-          <a className="scroll-cue" href="#now-showing">
-            <span className="scroll-cue-line" aria-hidden="true" />
-            Scroll to explore
-          </a>
-        </section>
+            <div className="hero-content">
+              <p className="eyebrow">
+                <span className="eyebrow-mark" aria-hidden="true" />
+                A more cinematic way to choose
+              </p>
+              <h1 id="hero-title">
+                Your next obsession
+                <br />
+                <span className="headline-accent">starts here.</span>
+              </h1>
+              <p className="hero-description">
+                Discover films worth remembering and build a watchlist for every
+                mood, moment, and movie night.
+              </p>
 
-        <section
-          className="showcase section-shell"
-          id="now-showing"
-          aria-labelledby="showcase-title"
-        >
-          <div className="section-heading">
-            <div>
-              <p className="eyebrow section-eyebrow">Made for movie lovers</p>
-              <h2 id="showcase-title">Explore the cinematic universe</h2>
+              <MovieSearchInput />
             </div>
-            <p className="section-description">
-              Your discovery space is taking shape. Movie artwork and details
-              will appear here when movie search is connected.
-            </p>
-          </div>
-          <MovieGrid />
-        </section>
 
-        <section className="closing-note section-shell" id="about">
-          <span className="closing-rule" aria-hidden="true" />
-          <p>Less scrolling. More stories worth remembering.</p>
-          <span className="closing-rule" aria-hidden="true" />
-        </section>
-      </main>
+            <div className="hero-index" aria-hidden="true">
+              <span>01</span>
+              <span className="hero-index-line" />
+              <span>DISCOVER</span>
+            </div>
+            <a className="scroll-cue" href="#now-showing">
+              <span className="scroll-cue-line" aria-hidden="true" />
+              Scroll to explore
+            </a>
+          </section>
+
+          <section
+            className="showcase section-shell"
+            id="now-showing"
+            aria-labelledby="showcase-title"
+          >
+            <div className="section-heading">
+              <div>
+                <p className="eyebrow section-eyebrow">
+                  Made for movie lovers
+                </p>
+                <h2 id="showcase-title">Explore the cinematic universe</h2>
+              </div>
+              <p className="section-description">
+                Browse what is trending or search for your next favorite film.
+              </p>
+            </div>
+            <MovieGrid />
+          </section>
+
+          <section className="closing-note section-shell" id="about">
+            <span className="closing-rule" aria-hidden="true" />
+            <p>Less scrolling. More stories worth remembering.</p>
+            <span className="closing-rule" aria-hidden="true" />
+          </section>
+        </main>
+      </MovieExplorer>
       <footer className="site-footer">
         <a className="footer-brand" href="#top">
           CineScope <span>3D</span>

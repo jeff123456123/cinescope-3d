@@ -14,13 +14,15 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) to view the app.
 
-The search field and movie-card area are UI placeholders; movie search and
-recommendations are not connected to an API yet.
+The homepage loads trending movies and supports title search through the
+server-side `/api/movies` route. Search is debounced; TMDB credentials are
+never sent to the browser.
 
 ## Environment
 
-Copy `.env.example` to `.env.local` and add a TMDB read access token when API
-integration is introduced. Never commit real tokens.
+Copy `.env.example` to `.env.local` and set `TMDB_API_READ_ACCESS_TOKEN` to a
+TMDB API Read Access Token. The token is read by the server only. Never commit
+real tokens.
 
 ## Checks
 

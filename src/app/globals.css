@@ -520,6 +520,32 @@ input {
   transform-style: preserve-3d;
 }
 
+.movie-card-art.has-poster {
+  background: #111117;
+}
+
+.movie-poster {
+  object-fit: cover;
+}
+
+.movie-card-art.has-poster::before,
+.movie-card-art.has-poster::after {
+  display: none;
+}
+
+.movie-card-fallback {
+  position: absolute;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 42%, rgb(140 111 207 / 20%), transparent 48%),
+    linear-gradient(155deg, #1d1929 0%, #15141d 48%, #0c0d13 100%);
+  inset: 0;
+}
+
+.movie-card-fallback .movie-card-light {
+  z-index: 1;
+}
+
 .movie-card-art::before,
 .movie-card-art::after {
   position: absolute;
@@ -542,34 +568,6 @@ input {
   left: 9%;
   height: 26%;
   border-color: rgb(205 190 255 / 6%);
-}
-
-.movie-card-indigo .movie-card-art {
-  background:
-    linear-gradient(180deg, transparent 42%, rgb(7 7 12 / 72%) 100%),
-    radial-gradient(ellipse at 70% 34%, rgb(99 114 190 / 25%), transparent 44%),
-    linear-gradient(150deg, #171c2c, #17151f 48%, #0c0d13);
-}
-
-.movie-card-rose .movie-card-art {
-  background:
-    linear-gradient(180deg, transparent 42%, rgb(7 7 12 / 72%) 100%),
-    radial-gradient(ellipse at 31% 43%, rgb(172 119 152 / 18%), transparent 43%),
-    linear-gradient(155deg, #251923, #1a151d 52%, #0d0c12);
-}
-
-.movie-card-teal .movie-card-art {
-  background:
-    linear-gradient(180deg, transparent 42%, rgb(7 7 12 / 72%) 100%),
-    radial-gradient(ellipse at 63% 39%, rgb(101 146 151 / 19%), transparent 43%),
-    linear-gradient(155deg, #172226, #15191f 52%, #0c0d13);
-}
-
-.movie-card-amber .movie-card-art {
-  background:
-    linear-gradient(180deg, transparent 42%, rgb(7 7 12 / 72%) 100%),
-    radial-gradient(ellipse at 42% 38%, rgb(176 137 91 / 18%), transparent 43%),
-    linear-gradient(155deg, #282116, #1a1818 52%, #0d0c12);
 }
 
 .movie-card-light {
@@ -616,10 +614,115 @@ input {
 }
 
 .movie-card-caption {
+  min-width: 0;
   margin: 12px 2px 0;
+}
+
+.movie-card-caption h3 {
+  overflow: hidden;
+  margin: 0;
+  color: #e9e6ef;
+  font-size: 13px;
+  font-weight: 550;
+  letter-spacing: -0.02em;
+  line-height: 1.45;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.movie-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 20px;
+  margin-top: 3px;
   color: #a5a0ae;
-  font-size: 11px;
+  font-size: 10px;
   line-height: 1.5;
+}
+
+.movie-meta-separator {
+  color: #635d70;
+}
+
+.movie-card-meta span:last-child[aria-label] {
+  color: #c8b991;
+}
+
+.movie-skeleton {
+  min-width: 0;
+  animation: skeleton-pulse 1.5s ease-in-out infinite alternate;
+}
+
+.movie-skeleton-art {
+  aspect-ratio: 0.79;
+  border: 1px solid rgb(255 255 255 / 6%);
+  border-radius: 8px;
+  background:
+    radial-gradient(ellipse at 50% 42%, rgb(125 103 173 / 12%), transparent 48%),
+    linear-gradient(145deg, #18161f, #101015 68%);
+}
+
+.movie-skeleton-line {
+  width: 72%;
+  height: 9px;
+  margin: 13px 2px 0;
+  border-radius: 8px;
+  background: rgb(204 197 222 / 13%);
+}
+
+.movie-skeleton-line.short {
+  width: 35%;
+  height: 7px;
+  margin-top: 8px;
+  opacity: 0.7;
+}
+
+@keyframes skeleton-pulse {
+  from {
+    opacity: 0.58;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.movie-status {
+  min-height: 54px;
+  padding-top: 18px;
+  color: #aaa5b3;
+  font-size: 12px;
+}
+
+.movie-status p {
+  margin: 0;
+  line-height: 1.7;
+}
+
+.movie-error {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.retry-button {
+  min-height: 34px;
+  padding: 0 13px;
+  border: 1px solid rgb(193 179 255 / 30%);
+  border-radius: 5px;
+  background: rgb(123 99 190 / 10%);
+  color: #e7e0ff;
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.retry-button:hover {
+  background: rgb(123 99 190 / 20%);
+}
+
+.retry-button:focus-visible {
+  outline: 2px solid #b9a0ff;
+  outline-offset: 3px;
 }
 
 .closing-note {
@@ -871,7 +974,14 @@ input:focus-visible {
 
   .movie-card-caption {
     margin-top: 9px;
-    font-size: 10px;
+  }
+
+  .movie-card-caption h3 {
+    font-size: 11px;
+  }
+
+  .movie-card-meta {
+    font-size: 9px;
   }
 
   .closing-note {
@@ -919,5 +1029,9 @@ input:focus-visible {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .movie-skeleton {
+    animation: none;
   }
 }
