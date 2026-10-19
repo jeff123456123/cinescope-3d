@@ -31,7 +31,7 @@ function isMovieGenre(value: unknown): value is MovieGenre {
   );
 }
 
-function normalizeMovie(value: unknown): Movie | null {
+export function normalizeTmdbMovie(value: unknown): Movie | null {
   if (!isRecord(value)) {
     return null;
   }
@@ -206,7 +206,7 @@ export async function getTmdbMovies(
   }
 
   const movies = results
-    .map(normalizeMovie)
+    .map(normalizeTmdbMovie)
     .filter((movie): movie is Movie => movie !== null);
   const totalPages = Math.min(Math.max(Math.floor(data.total_pages), 0), 500);
 
